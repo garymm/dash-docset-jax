@@ -12,6 +12,9 @@ jobs:
     steps:
       - name: Checkout local
         uses: actions/checkout@v4
+        with:
+          fetch-tags: true
+          token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
 
       - name: Get latest release of external repo
         id: external_release
@@ -22,7 +25,6 @@ jobs:
       - name: Check if tag exists in local repo
         id: check_tag
         run: |
-          git fetch --tags
           if git rev-parse "${{ steps.external_release.outputs.EXTERNAL_TAG }}" >/dev/null 2>&1; then
             echo "TAG_EXISTS=true" >> $GITHUB_OUTPUT
           else
