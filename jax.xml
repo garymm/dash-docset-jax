@@ -1,6 +1,7 @@
 <entry>
-  <version>0.4.20</version>
-  <url>https://github.com/garymm/dash-docset-jax/releases/download/v0.4.20/jax-v0.4.20.tar.gz</url>
+  <version>0.4.31</version>
+  <url>https://github.com/garymm/dash-docset-jax/releases/download/v0.4.31/jax-v0.4.31.4.20.tar.gz</url>
   <other-versions>
+        <version><name>0.4.20</name></version>
   </other-versions>
 </entry>
