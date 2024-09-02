@@ -71,3 +71,4 @@ git config --global user.name "Gary Mindlin Miguel"
 git commit -m "Update version to ${TAG}"
 git tag -a "${TAG}" -m "jax ${TAG}"
 git push origin "${TAG}"
+git push origin

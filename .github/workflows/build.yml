@@ -7,7 +7,7 @@ on:
 
 
 jobs:
-  check-release:
+  build-release:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout local
@@ -43,4 +43,5 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           artifacts: "*.tar.gz"
+          tag: ${{ steps.external_release.outputs.EXTERNAL_TAG }}
 
