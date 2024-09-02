@@ -1,0 +1,44 @@
+name: Build Latest
+
+on:
+  schedule:
+    - cron: '0 * * * *'  # Runs every hour
+  workflow_dispatch:  # Allows manual triggering
+
+
+jobs:
+  check-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout local
+        uses: actions/checkout@v4
+
+      - name: Get latest release of external repo
+        id: external_release
+        run: |
+          LATEST_RELEASE=$(curl -s "https://api.github.com/repos/google/jax/releases" | jq -r "[.[] | select(.tag_name | startswith(\"jax-\"))][0].tag_name")
+          echo "EXTERNAL_TAG=${LATEST_RELEASE}" >> $GITHUB_OUTPUT
+
+      - name: Check if tag exists in local repo
+        id: check_tag
+        run: |
+          git fetch --tags
+          if git rev-parse "${{ steps.external_release.outputs.EXTERNAL_TAG }}" >/dev/null 2>&1; then
+            echo "TAG_EXISTS=true" >> $GITHUB_OUTPUT
+          else
+            echo "TAG_EXISTS=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Build
+        id: build
+        if: steps.check_tag.outputs.TAG_EXISTS == 'false'
+        run: |
+          echo "New release detected: ${{ steps.external_release.outputs.EXTERNAL_TAG }}"
+          ./build.sh "${{ steps.external_release.outputs.EXTERNAL_TAG }}"
+
+      - name: Release built archive
+        if: steps.check_tag.outputs.TAG_EXISTS == 'false'
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "*.tar.gz"
+
