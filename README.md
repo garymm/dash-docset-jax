@@ -4,7 +4,7 @@
 
 To use, you can add this feed in Dash/Zeal directly:
 ```
-https://raw.githubusercontent.com/garymm/dash-docset-jax/master/Jax.xml
+https://raw.githubusercontent.com/garymm/dash-docset-jax/master/jax.xml
 ```
 Or download the latest release [here](https://github.com/garymm/dash-docset-jax/releases).
 
