@@ -49,15 +49,13 @@ fi
 
 current_version=$(sed -n 's/.*<version>\(.*\)<\/version>.*/\1/p' "${xml_file}" | head -n 1)
 
-version="${TAG#jax-v}"
-
 # Update the XML file
 sed -i.bak '
     # Update the version
     /<version>/s|>[^<]*<|>'"$version"'<|
 
     # Update the URL
-    /<url>/s|/v[^/]*/jax-v[^.]*|/v'"$version"'/jax-v'"$version"'|
+    /<url>/s|/v[^/]*/jax-v[^.]*|/'"$TAG"'/'"$TAG"'|
 
     # Move the current version to other-versions
     /<other-versions>/a\        <version><name>'"$current_version"'</name></version>
