@@ -7,7 +7,6 @@ set -o xtrace
 TAG="${1}"
 REPO_ROOT="$(cd -P -- "$(dirname -- "$0")" && pwd -P)"
 
-
 if [ -z "$TAG" ]; then
     echo "Error: arg must be set to TAG of jax you want to build docs for" >&2
     exit 1
@@ -23,7 +22,11 @@ JAX_DIR=$(mktemp -d)
 git clone --depth 1 --branch "${TAG}" https://github.com/google/jax.git "${JAX_DIR}"
 
 cd "${JAX_DIR}"
-uv venv
+# not really sure how they get this to work in their doc build,
+# but without this I get unsatisiable dependency on jaxlib
+sed -i.bak 's/\.\[ci\]/\./' docs/requirements.txt
+# sphinx 7 incompatible with python 3.12
+uv venv --python=3.11
 source .venv/bin/activate
 uv pip install -r docs/requirements.txt
 cd docs
@@ -36,7 +39,6 @@ uv venv
 source .venv/bin/activate
 uv pip install tqdm python-magic selectolax doc2dash beautifulsoup4 lxml
 python3 ./transform.py "${HTML_DIR}"
-sed -i 's/var(--pst-font-family-monospace)/monospace/g' $HTML_DIR/**/*.css
-doc2dash -f -d ./ --online-redirect-url https://jax.readthedocs.io/ --name jax -i icon.png $HTML_DIR
+sed -i.bak 's/var(--pst-font-family-monospace)/monospace/g' $HTML_DIR/**/*.css
+doc2dash -f -d ./ --online-redirect-url https://docs.jax.dev/en/latest/ --name jax -i icon.png $HTML_DIR
 tar --exclude='.DS_Store' -cvzf "${TAG}.tar.gz" jax.docset
-
