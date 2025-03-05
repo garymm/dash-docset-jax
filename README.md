@@ -1,22 +1,12 @@
 ## JAX offline documentation in [dash](https://kapeli.com/dash)/[zeal](https://github.com/zealdocs/zeal) docset browser
 
-![screenshot](/screenshot.jpg)
-
-To use, you can add this feed in Dash/Zeal directly:
-```
-https://raw.githubusercontent.com/garymm/dash-docset-jax/master/jax.xml
-```
-Or download the latest release [here](https://github.com/garymm/dash-docset-jax/releases).
+This is contributed to Dash / Zeal here:
+https://github.com/Kapeli/Dash-User-Contributions/tree/master/docsets/jax
 
 
 ## Steps to generate the docset
 
+Install libmagic as per the instructions [here](https://pypi.org/project/python-magic/).
+
 Run `./build.sh ${JAX_TAG}`
 
-## Features
-
-* Latex renders correctly:
-
-![math](/math.jpg)
-
-* Syntax highlighting works

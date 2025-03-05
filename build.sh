@@ -40,33 +40,3 @@ sed -i 's/var(--pst-font-family-monospace)/monospace/g' $HTML_DIR/**/*.css
 doc2dash -f -d ./ --online-redirect-url https://jax.readthedocs.io/ --name jax -i icon.png $HTML_DIR
 tar --exclude='.DS_Store' -cvzf "${TAG}.tar.gz" jax.docset
 
-readonly xml_file="jax.xml"
-
-if [ ! -f "${xml_file}" ]; then
-    echo "Error: File ${xml_file} not found."
-    exit 1
-fi
-
-current_version=$(sed -n 's/.*<version>\(.*\)<\/version>.*/\1/p' "${xml_file}" | head -n 1)
-
-# Update the XML file
-sed -i.bak '
-    # Update the version
-    /<version>/s|>[^<]*<|>'"$version"'<|
-
-    # Update the URL
-    /<url>/s|/v[^/]*/jax-v[^.]*|/'"$TAG"'/'"$TAG"'|
-
-    # Move the current version to other-versions
-    /<other-versions>/a\        <version><name>'"$current_version"'</name></version>
-' "$xml_file"
-
-echo "XML file updated successfully."
-
-git add "${xml_file}"
-git config --global user.email "garymm@garymm.org"
-git config --global user.name "Gary Mindlin Miguel"
-git commit -m "Update version to ${TAG}"
-git tag -a "${TAG}" -m "jax ${TAG}"
-git push origin "${TAG}"
-git push origin
