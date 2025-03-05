@@ -41,4 +41,4 @@ uv pip install tqdm python-magic selectolax doc2dash beautifulsoup4 lxml
 python3 ./transform.py "${HTML_DIR}"
 sed -i.bak 's/var(--pst-font-family-monospace)/monospace/g' $HTML_DIR/**/*.css
 doc2dash -f -d ./ --online-redirect-url https://docs.jax.dev/en/latest/ --name jax -i icon.png $HTML_DIR
-tar --exclude='.DS_Store' -cvzf "${TAG}.tar.gz" jax.docset
+tar --exclude='.DS_Store' -cvzf "jax.tgz" jax.docset
